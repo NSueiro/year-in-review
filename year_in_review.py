@@ -134,17 +134,6 @@ class Content():
             genres.append(genre["name"])
         return genres
 
-    def _get_actors(self, content_info):
-        """Private auxiliary method. To get the content actors, just use the attribute.
-        Params:
-            content_info: Json object.
-        Returns a list of strings with the cast of the content.
-        """
-        actors = []
-        for actor in content_info["credits"]["cast"][:MAX_CAST]:
-            actors.append(actor["name"])
-        return actors
-
     def _get_production_companies(self, content_info):
         """Private auxiliary method. To get the content production companies, just use the attribute.
         Params:
@@ -209,6 +198,17 @@ class Movie(Content):
             else:
                 directors.append(crew["name"])
         return directors[:MAX_DIRECTORS]
+
+    def _get_actors(self, content_info):
+        """Private auxiliary method. To get the content actors, just use the attribute.
+        Params:
+            content_info: Json object.
+        Returns a list of strings with the cast of the content.
+        """
+        actors = []
+        for actor in content_info["credits"]["cast"][:MAX_CAST]:
+            actors.append(actor["name"])
+        return actors
 
     def _get_release_date(self, content_info):
         """Private auxiliary method. To get the release date, just use the object's attribute.
@@ -290,6 +290,18 @@ class SeriesEpisode(Content):
             else:
                 directors.append(crew["name"])
         return directors[:MAX_DIRECTORS]
+
+    def _get_actors(self, content_info):
+        """Private auxiliary method. To get the directors, just use the object' attribute.
+        Params:
+            content_info: Json object.
+        Returns a list of strings with the episode's directors.
+        """
+        content_info = self._requester.get_episode_info(self.show_id, self.season, self.episode).json()
+        actors = []
+        for actor in content_info["credits"]["cast"][:MAX_CAST]:
+            actors.append(actor["name"])
+        return actors
 
     def _get_release_date(self, content_info):
         """Private auxiliary method. To get the release date, just use the object's attribute.
@@ -579,24 +591,24 @@ def main():
 
     get_most_watched_genres(watched_content)
     print()
-    get_most_liked_genres(watched_content)
-    print()
+    # get_most_liked_genres(watched_content)
+    # print()
     get_amount_of_movies_and_series_watched(watched_content)
     print()
     get_platform_usage(watched_content)
     print()
     get_most_watched_actors(watched_content)
     print()
-    get_most_liked_actors(watched_content)
-    print()
+    # get_most_liked_actors(watched_content)
+    # print()
     get_most_watched_production_companies(watched_content)
     print()
-    get_most_liked_production_companies(watched_content)
-    print()
+    # get_most_liked_production_companies(watched_content)
+    # print()
     get_most_watched_directors(watched_content)
     print()
-    get_most_liked_directors(watched_content)
-    print()
+    # get_most_liked_directors(watched_content)
+    # print()
     get_activity_by_month_and_day(watched_content)
 
 main()
